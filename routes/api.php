@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\AccessTokenController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +18,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+$router->group(['middleware' => ['auth:sanctum']], function () {
+  Route::get('accessControl', [AccessTokenController::class, 'accessControl']);
+
+
+  // Permisos
+  Route::post('permisos/asignar/{permission}', [PermissionController::class, 'assign']);
+  Route::post('permisos/quitar/{permission}', [PermissionController::class, 'deny']);
+  Route::apiResource('permisos', PermissionController::class)->only(['index']);
+
+  //Roles
+  Route::apiResource('roles', RoleController::class)->only(['index', 'store', 'destroy'])->parameter('roles', 'rol');
+
+  //Usuarios
+  Route::get('users/me', [UserController::class, 'me']);
+  Route::apiResource('users', UserController::class)->parameter('users', 'user');
 });
+
+Route::get('tokens', [AccessTokenController::class, 'index']);
+Route::delete('tokens', [AccessTokenController::class, 'destroyAll']);
+Route::post('login', [AccessTokenController::class, 'store']);
+Route::post('logout', [AccessTokenController::class, 'destroy']);

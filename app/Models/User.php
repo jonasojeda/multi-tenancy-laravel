@@ -4,13 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'foto_perfil'
     ];
 
     /**
@@ -42,4 +46,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //funciones publicas
+    public function obtenerDatos()
+    {
+        return [
+            'id' => $this->id,
+            'nombre' => $this->name,
+            'email' => $this->email,
+            'verificacion_email' => $this->email_verified_at,
+            'roles' => $this->getRoleNames(),
+            'permisos' => $this->getAllPermissions()->pluck('name'),
+            'foto_perfil' => $this->foto_perfil ? Storage::url($this->foto_perfil) : null,
+        ];
+    }
+
+    public function needsPasswordChange()
+    {
+        return $this->password_change_required;
+    }
 }

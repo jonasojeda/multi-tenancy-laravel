@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Tenant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Stancl\Tenancy\Exceptions\TenantDatabaseAlreadyExistsException;
 
 class TenantDomainSeeder extends Seeder
 {
@@ -13,10 +14,20 @@ class TenantDomainSeeder extends Seeder
      */
     public function run(): void
     {
-        $tenant1 = Tenant::create(['id' => 'foo']);
-        $tenant1->domains()->create(['domain' => 'foo.localhost']);
+        try {
+            $tenant1 = Tenant::create(['id' => 'foo']);
+            $tenant1->domains()->create(['domain' => 'foo.localhost']);
+        } catch (TenantDatabaseAlreadyExistsException $e) {
+            // Manejar la excepción si la base de datos ya existe, por ejemplo, saltarse la creación.
+            $tenant1 = Tenant::where('id', 'foo')->first();
+        }
 
-        $tenant2 = Tenant::create(['id' => 'bar']);
-        $tenant2->domains()->create(['domain' => 'bar.localhost']);
+        try {
+            $tenant2 = Tenant::create(['id' => 'bar']);
+            $tenant2->domains()->create(['domain' => 'bar.localhost']);
+        } catch (TenantDatabaseAlreadyExistsException $e) {
+            // Manejar la excepción si la base de datos ya existe
+            $tenant2 = Tenant::where('id', 'bar')->first();
+        }
     }
 }

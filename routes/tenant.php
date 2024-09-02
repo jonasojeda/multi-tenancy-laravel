@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -30,4 +31,5 @@ Route::middleware([
     Route::get('/', function () {
         dd(User::all());
     });
+    Route::apiResource('users', UserController::class)->parameter('users', 'user');
 });

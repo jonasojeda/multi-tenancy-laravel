@@ -24,7 +24,7 @@ class SubDomainController extends Controller
             'subDomain' => 'required|string',
         ];
         $centralDomain = env('CENTRAL_DOMAIN');
-        $tenant1 = Tenant::create();
+        $tenant1 = Tenant::create(['id' => $request->subDomain]);
         $tenant1->domains()->create(['domain' => "$request->subDomain.$centralDomain"]);
 
         return response()->json([

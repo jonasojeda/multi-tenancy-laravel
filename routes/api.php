@@ -35,7 +35,6 @@ $router->group(['middleware' => ['auth:sanctum']], function () {
   //Roles
   Route::apiResource('roles', RoleController::class)->only(['index', 'store', 'destroy'])->parameter('roles', 'rol');
 
-  Route::apiResource('subDomain', SubDomainController::class)->only(['store']);
   //Usuarios
   Route::get('users/me', [UserController::class, 'me']);
   Route::apiResource('users', UserController::class)->parameter('users', 'user');

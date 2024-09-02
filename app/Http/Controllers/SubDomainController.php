@@ -23,6 +23,14 @@ class SubDomainController extends Controller
         $validates = [
             'subDomain' => 'required|string',
         ];
+        $centralDomain = env('CENTRAL_DOMAIN');
+        $tenant1 = Tenant::create();
+        $tenant1->domains()->create(['domain' => "$request->subDomain.$centralDomain"]);
+
+        return response()->json([
+            'status' => true,
+            'data' => $tenant1->obtenerDatos(),
+        ]);
     }
 
     /**

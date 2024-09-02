@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SubDomainController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,7 @@ $router->group(['middleware' => ['auth:sanctum']], function () {
   //Roles
   Route::apiResource('roles', RoleController::class)->only(['index', 'store', 'destroy'])->parameter('roles', 'rol');
 
+  Route::apiResource('subDomain', SubDomainController::class)->only(['store']);
   //Usuarios
   Route::get('users/me', [UserController::class, 'me']);
   Route::apiResource('users', UserController::class)->parameter('users', 'user');

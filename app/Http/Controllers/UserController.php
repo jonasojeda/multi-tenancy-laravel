@@ -18,11 +18,11 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-        //control de los permisos
-        $this->authorizeResource(User::class, 'user');
-    }
+    // public function __construct()
+    // {
+    //     //control de los permisos
+    //     $this->authorizeResource(User::class, 'user');
+    // }
 
     /**
      * Obtener todos

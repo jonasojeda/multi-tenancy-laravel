@@ -41,7 +41,6 @@ Route::middleware([
     //Roles
     Route::apiResource('roles', RoleController::class)->only(['index', 'store', 'destroy'])->parameter('roles', 'rol');
 
-    Route::apiResource('subDomain', SubDomainController::class)->only(['store']);
   });
 
   //Usuarios

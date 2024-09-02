@@ -38,6 +38,9 @@ $router->group(['middleware' => ['auth:sanctum']], function () {
   //Usuarios
   Route::get('users/me', [UserController::class, 'me']);
   Route::apiResource('users', UserController::class)->parameter('users', 'user');
+  //SUD DOMINIOS
+  Route::apiResource('subDomain', SubDomainController::class);
+
 });
 
 Route::get('tokens', [AccessTokenController::class, 'index']);

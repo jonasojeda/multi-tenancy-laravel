@@ -15,12 +15,9 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Super Admin',
-        //     'email' => 'superadmin@yopmail.com',
-        // ]);
-
-        // $this->call(TenantDomainSeeder::class);
-        // $this->call(TenantUsersSeeder::class);
+        \App\Models\User::factory()->create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@yopmail.com',
+        ]);
     }
 }

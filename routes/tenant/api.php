@@ -41,11 +41,12 @@ Route::middleware([
     //Roles
     Route::apiResource('roles', RoleController::class)->only(['index', 'store', 'destroy'])->parameter('roles', 'rol');
 
-  });
-
-  //Usuarios
+    //Usuarios
   Route::get('users/me', [UserController::class, 'me']);
   Route::apiResource('users', UserController::class)->parameter('users', 'user');
+  });
+
+  
 
 
   // Sin autenticar

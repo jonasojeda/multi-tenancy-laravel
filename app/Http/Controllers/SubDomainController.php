@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Clases\App;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * @group Subdominios
@@ -94,8 +95,17 @@ class SubDomainController extends Controller
     public function store(Request $request)
     {
         $validates = [
-            'subDomain' => 'required|string',
+            'subDomain' => 'required|string|unique:tenants,id',
         ];
+
+        $validator = Validator::make($request->input(), $validates);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()->all()
+            ], 400);
+        }
+        
         $centralDomain = env('CENTRAL_DOMAIN');
         $tenant1 = Tenant::create(['id' => $request->subDomain]);
         $tenant1->domains()->create(['domain' => "$request->subDomain.$centralDomain"]);

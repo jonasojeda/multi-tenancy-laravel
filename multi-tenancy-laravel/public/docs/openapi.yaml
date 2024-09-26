@@ -1,0 +1,783 @@
+openapi: 3.0.3
+info:
+  title: multy-tenancy
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/tokens:
+    get:
+      summary: 'Mostrar los tokens de acceso'
+      operationId: mostrarLosTokensDeAcceso
+      description: 'Muestra los tokens de acceso del usuario actual.'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Autenticación
+      security: []
+    delete:
+      summary: 'Eliminar todos los tokens de acceso'
+      operationId: eliminarTodosLosTokensDeAcceso
+      description: 'Elimina todos los tokens de acceso del usuario actual. Equivale a cerrar todas las sesiones del usuario actual.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Autenticación
+      security: []
+  /api/login:
+    post:
+      summary: 'Crear un token de acceso (login)'
+      operationId: crearUnTokenDeAccesologin
+      description: 'Crea un token de acceso para el usuario actual.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Correo electrónico del usuario.'
+                  example: superadmin1@yopmail.com
+                password:
+                  type: string
+                  description: 'Contraseña del usuario.'
+                  example: '1234'
+              required:
+                - email
+                - password
+      security: []
+  /api/logout:
+    post:
+      summary: 'Eliminar el token de acceso (logout)'
+      operationId: eliminarElTokenDeAccesologout
+      description: 'Elimina el token de acceso usado para la autenticación.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Autenticación
+      security: []
+  '/api/permisos/asignar/{permission_id}':
+    post:
+      summary: 'Asignar un permiso a un rol'
+      operationId: asignarUnPermisoAUnRol
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 8
+                  name: 'Destroy entities'
+                  description: null
+                  guard_name: web
+                  created_at: '2023-12-07T13:16:57.000000Z'
+                  updated_at: '2023-12-07T13:16:57.000000Z'
+                  group: entities
+                properties:
+                  id:
+                    type: integer
+                    example: 8
+                  name:
+                    type: string
+                    example: 'Destroy entities'
+                  description:
+                    type: string
+                    example: null
+                  guard_name:
+                    type: string
+                    example: web
+                  created_at:
+                    type: string
+                    example: '2023-12-07T13:16:57.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2023-12-07T13:16:57.000000Z'
+                  group:
+                    type: string
+                    example: entities
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Permisos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: ''
+                  example: sint
+              required:
+                - role
+      security: []
+    parameters:
+      -
+        in: path
+        name: permission_id
+        description: 'The ID of the permission.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/permisos/quitar/{permission_id}':
+    post:
+      summary: 'Denegar un permiso de un rol'
+      operationId: denegarUnPermisoDeUnRol
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 8
+                  name: 'Destroy entities'
+                  description: null
+                  guard_name: web
+                  created_at: '2023-12-07T13:16:57.000000Z'
+                  updated_at: '2023-12-07T13:16:57.000000Z'
+                  group: entities
+                properties:
+                  id:
+                    type: integer
+                    example: 8
+                  name:
+                    type: string
+                    example: 'Destroy entities'
+                  description:
+                    type: string
+                    example: null
+                  guard_name:
+                    type: string
+                    example: web
+                  created_at:
+                    type: string
+                    example: '2023-12-07T13:16:57.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2023-12-07T13:16:57.000000Z'
+                  group:
+                    type: string
+                    example: entities
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Permisos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: ''
+                  example: sint
+              required:
+                - role
+      security: []
+    parameters:
+      -
+        in: path
+        name: permission_id
+        description: 'The ID of the permission.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/permisos:
+    get:
+      summary: 'Mostrar todos los permisos'
+      operationId: mostrarTodosLosPermisos
+      description: ''
+      parameters:
+        -
+          in: query
+          name: role
+          description: ''
+          example: Superadministrador
+          required: false
+          schema:
+            type: string
+            description: ''
+            example: Superadministrador
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '[{"group": "areas","description": "Conjunto de permisos de: areas","permissions": [{"id": 12,"group": "areas","name": "Destroy areas","description": null},{"id": 10,"group": "areas","name": "Store areas","description": null},{"id": 11,"group": "areas","name": "Update areas","description": null},{"id": 9,"group": "areas","name": "View areas","description": null}]},]'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Permisos
+      security: []
+  /api/roles:
+    get:
+      summary: 'Obtener todos'
+      operationId: obtenerTodos
+      description: 'Obtener todos los registros'
+      parameters:
+        -
+          in: query
+          name: nroPagina
+          description: 'Página a mostrar.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Página a mostrar.'
+            example: 1
+        -
+          in: query
+          name: sinPaginar
+          description: 'Para evitar la paginación y devolver todos los registros.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Para evitar la paginación y devolver todos los registros.'
+            example: true
+        -
+          in: query
+          name: paginadoSimple
+          description: 'Para realizar un paginado simple con anterior/siguiente, eficiente cuando se manejan muchos datos.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Para realizar un paginado simple con anterior/siguiente, eficiente cuando se manejan muchos datos.'
+            example: true
+        -
+          in: query
+          name: nombre
+          description: 'Nombre de role.'
+          example: Algo
+          required: false
+          schema:
+            type: string
+            description: 'Nombre de role.'
+            example: Algo
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Role
+    post:
+      summary: Crear
+      operationId: crear
+      description: 'Crear un nuevo registro'
+      parameters: []
+      responses: {  }
+      tags:
+        - Role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: 'Nombre del role.'
+                  example: Algo
+              required:
+                - nombre
+  '/api/roles/{rol}':
+    delete:
+      summary: Eliminar
+      operationId: eliminar
+      description: 'Eliminar un registro'
+      parameters: []
+      responses: {  }
+      tags:
+        - Role
+    parameters:
+      -
+        in: path
+        name: rol
+        description: ''
+        example: 3
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: id
+        description: 'ID del registro.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/subDomain:
+    get:
+      summary: 'Obtener todos'
+      operationId: obtenerTodos
+      description: ''
+      parameters:
+        -
+          in: query
+          name: subDomain
+          description: ''
+          example: dominio1
+          required: false
+          schema:
+            type: string
+            description: ''
+            example: dominio1
+        -
+          in: query
+          name: order_desc
+          description: ''
+          example: 'true'
+          required: false
+          schema:
+            type: string
+            description: ''
+            example: 'true'
+        -
+          in: query
+          name: order_asc
+          description: ''
+          example: 'true'
+          required: false
+          schema:
+            type: string
+            description: ''
+            example: 'true'
+        -
+          in: query
+          name: sinPaginar
+          description: ''
+          example: 'true'
+          required: false
+          schema:
+            type: string
+            description: ''
+            example: 'true'
+        -
+          in: query
+          name: nroPagina
+          description: ''
+          example: '1'
+          required: false
+          schema:
+            type: string
+            description: ''
+            example: '1'
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Subdominios
+      security: []
+    post:
+      summary: Crear
+      operationId: crear
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Subdominios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subDomain:
+                  type: string
+                  description: ''
+                  example: perferendis
+              required:
+                - subDomain
+      security: []
+  '/api/subDomain/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Subdominios
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Subdominios
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Subdominios
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the subDomain.'
+        example: ipsum
+        required: true
+        schema:
+          type: string
+  /api/users/me:
+    get:
+      summary: 'Devolver los datos del usuario autenticado'
+      operationId: devolverLosDatosDelUsuarioAutenticado
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Usuarios
+  /api/users:
+    get:
+      summary: 'Obtener todos'
+      operationId: obtenerTodos
+      description: ''
+      parameters:
+        -
+          in: query
+          name: email
+          description: ''
+          example: matias@gmail
+          required: false
+          schema:
+            type: string
+            description: ''
+            example: matias@gmail
+        -
+          in: query
+          name: nombre
+          description: ''
+          example: reprehenderit
+          required: false
+          schema:
+            type: string
+            description: ''
+            example: reprehenderit
+        -
+          in: query
+          name: rol_id
+          description: ''
+          example: 3.0
+          required: false
+          schema:
+            type: number
+            description: ''
+            example: 3.0
+        -
+          in: query
+          name: ubicacion_id
+          description: ''
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: ''
+            example: 1.0
+        -
+          in: query
+          name: trabajando
+          description: ''
+          example: false
+          required: false
+          schema:
+            type: boolean
+            description: ''
+            example: false
+        -
+          in: query
+          name: ubicacion_trabajando_id
+          description: ''
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: ''
+            example: 1.0
+        -
+          in: query
+          name: nroPagina
+          description: ''
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: ''
+            example: 1.0
+        -
+          in: query
+          name: sinPaginar
+          description: ''
+          example: false
+          required: false
+          schema:
+            type: boolean
+            description: ''
+            example: false
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Usuarios
+      security: []
+    post:
+      summary: 'Crear usuario'
+      operationId: crearUsuario
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: provident
+                email:
+                  type: string
+                  description: ''
+                  example: kieran.casper@example.net
+                password:
+                  type: string
+                  description: ''
+                  example: 'y25Tc~SpUr#K\F&O/K1M'
+                rol_id:
+                  type: number
+                  description: ''
+                  example: 401991410.7
+                foto_perfil:
+                  type: string
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 100000 kilobytes.'
+              required:
+                - name
+                - email
+                - password
+      security: []
+  '/api/users/{id}':
+    get:
+      summary: 'Obtener datos'
+      operationId: obtenerDatos
+      description: 'Devuelve datos de un usuario'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Usuarios
+      security: []
+    put:
+      summary: Actualizar
+      operationId: actualizar
+      description: 'Se actualiza un usuario'
+      parameters: []
+      responses: {  }
+      tags:
+        - Usuarios
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: autem
+                email:
+                  type: string
+                  description: ''
+                  example: odamore@example.net
+                password:
+                  type: string
+                  description: ''
+                  example: 4dp!TFzbS7n6J_!tWZSp
+                rol_id:
+                  type: number
+                  description: "'telefono' => ['string', 'regex:/^\\+(?:[0-9] ?){6,14}[0-9]$/'],."
+                  example: 1.06662845
+                foto_perfil:
+                  type: string
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 100000 kilobytes.'
+      security: []
+    delete:
+      summary: 'Eliminar usuario'
+      operationId: eliminarUsuario
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Usuarios
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+tags:
+  -
+    name: Autenticación
+    description: ''
+  -
+    name: Permisos
+    description: ''
+  -
+    name: Role
+    description: ''
+  -
+    name: Subdominios
+    description: ''
+  -
+    name: Usuarios
+    description: ''
